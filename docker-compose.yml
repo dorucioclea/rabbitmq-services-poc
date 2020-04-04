@@ -8,17 +8,25 @@ services:
     rabbitmq:
         hostname: rabbitmq
         container_name: rabbitmq
-        image: poc/rabbitmq
-        build: 
-            context: ./broker
-            dockerfile: Dockerfile
+        image: rabbitmq:3.8.3-management-alpine
+        # build: 
+        #     context: ./broker
+        #     dockerfile: Dockerfile
+        # environment: 
+            # RABBITMQ_ERLANG_COOKIE: '6085e2412b6fa88647466c6a81c0cea0'
         networks: 
             - poc
         ports:
-            - 15672:15672
-            - 5672:5672
+            - "4369:4369"
+            - "5671:5671"
+            - "5672:5672"
+            - "15671:15671"
+            - "15672:15672"
+            - "25672:25672"
+            - "61613:61613"
         volumes:
-            - ./data/rabbit:/var/lib/rabbitmq:rw
-            - ./broker/configuration/definitions.json:/opt/definitions.json:ro
-            - ./broker/configuration/rabbit.config:/etc/rabbitmq/rabbitmq.config:ro
-            - ./broker/plugins/enabled_plugins:/etc/rabbitmq/enabled_plugins
+            - "./data/rabbit:/var/lib/rabbitmq/mnesia:rw"
+            - "./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
+            - "./rabbitmq/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
+            - "./rabbitmq/rabbitmq-modified.conf:/etc/rabbitmq/rabbitmq-modified.conf"
+            - "./rabbitmq/rabbitmq-definitions.json:/etc/rabbitmq/rabbitmq-definitions.json"
