@@ -1,0 +1,51 @@
+version: '3.7'
+
+networks:
+    internal:
+      external: false # Create the volume if it doesn't exist
+      name: servicenetwork
+
+services:
+    rabbitmq1:
+        hostname: rabbitmq1
+        container_name: rabbitmq1
+        image: microservices/rabbitmq
+        build: 
+            context: ./rabbitmq
+            dockerfile: Dockerfile
+        cap_add:
+            - ALL
+        environment: 
+            RABBITMQ_ERLANG_COOKIE: "6085e2412b6fa88647466c6a81c0cea0"
+            RABBITMQ_NODENAME: rabbitmq1
+        ports:
+            - "4369:4369"
+            - "5671:5671"
+            - "5672:5672"
+            - "15671:15671"
+            - "15672:15672"
+            - "25672:25672"
+            - "61613:61613"
+        networks: 
+            - internal
+        volumes:
+            - "./data/logs/rabbit-node-one:/var/log/rabbitmq:rw"
+            - "./data/rabbit-node-one:/var/lib/rabbitmq/mnesia:rw"
+
+    rabbitmq2:
+        hostname: rabbitmq2
+        container_name: rabbitmq2
+        image: microservices/rabbitmq
+        build: 
+            context: ./rabbitmq
+            dockerfile: Dockerfile
+        environment: 
+            RABBITMQ_ERLANG_COOKIE: "6085e2412b6fa88647466c6a81c0cea0"
+            RABBITMQ_NODENAME: rabbitmq2
+        depends_on: 
+            - rabbitmq1
+        networks: 
+            - internal
+        volumes:
+            - "./data/logs/rabbit-node-two:/var/log/rabbitmq:rw"
+            - "./data/rabbit-node-two:/var/lib/rabbitmq/mnesia:rw"

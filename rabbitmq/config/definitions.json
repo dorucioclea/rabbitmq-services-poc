@@ -1,0 +1,81 @@
+{
+    "rabbit_version":"3.6.3",
+    "users": [
+        {
+            "name": "rabbitmq-user",
+            "password": "userpass",
+            "tags": "administrator"
+        }
+    ],
+    "vhosts": [
+        {
+            "name": "/"
+        }
+    ],
+    "permissions": [
+        {
+            "user": "rabbitmq-user",
+            "vhost": "/",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        }
+    ],
+    "policies": [
+        {
+            "vhost": "/",
+            "name": "common-queue-configuration",
+            "pattern": "^common",
+            "apply-to": "queues",
+            "definition": {
+                "ha-mode":"all","ha-sync-mode":"automatic","ha-sync-batch-size":5
+            }
+        },
+        {
+            "vhost": "/",
+            "name": "mqtt-queue-configuration",
+            "pattern": "^mqtt",
+            "apply-to": "queues",
+            "definition": {
+                "max-length": 10000,
+                "message-ttl": 100000,
+                "dead-letter-exchange": "mqtt_dead_letter_exchange",
+                "dead-letter-routing-key": "message_dead_lettered",
+                "ha-mode":"all","ha-sync-mode":"automatic","ha-sync-batch-size":5
+            }
+        },
+        {"vhost":"/","name":"ha","pattern":"", "definition":{"ha-mode":"all","ha-sync-mode":"automatic","ha-sync-batch-size":5}}
+    ],
+    "queues": [
+        {
+            "name": "customers",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-ha-policy": "all"
+            }
+        }
+    ],
+    "exchanges": [
+        {
+            "name": "e.customer.created",
+            "vhost": "/",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        }
+    ],
+    "bindings": [
+        {
+            "source": "e.customer.created",
+            "vhost": "/",
+            "destination": "customers",
+            "destination_type": "queue",
+            "routing_key": "customer.created",
+            "arguments": {}
+        }
+    ]
+}
