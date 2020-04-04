@@ -16,12 +16,8 @@ trap "cleanup_on_exit" EXIT
 
 # Start Rabbitmq in the background (causes the pid file to be updated)
 # Note that the pid file location can be overridden with the rmq 'RABBITMQ_PID_FILE' variable
-/usr/sbin/rabbitmq-server &
+rabbitmq-server &
 RABBIT_PROCESS=$!
-
-rabbitmqctl wait /var/lib/rabbitmq/mnesia/rabbit@$HOSTNAME.pid
-echo "RabbitMQ Started"
-
 [ $? -ne 0 ] && echo "Rabbitmq failed to start!" && \
     rm -f /var/lib/rabbitmq/mnesia/rabbit@$HOSTNAME.pid && exit 1
 
