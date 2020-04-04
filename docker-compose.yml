@@ -1,21 +1,22 @@
 version: '3'
 
-networks: 
-    poc:
-        driver: bridge
+networks:
+    default:
+      external:
+        name: servicenetwork
 
 services:
-    rabbitmq:
-        hostname: rabbitmq
-        container_name: rabbitmq
+    rabbitmq1:
+        hostname: rabbitmq1
         image: microservices/rabbitmq
         build: 
             context: ./rabbitmq
             dockerfile: Dockerfile
+        cap_add:
+            - ALL
         environment: 
-            RABBITMQ_ERLANG_COOKIE: '6085e2412b6fa88647466c6a81c0cea0'
-        networks: 
-            - poc
+            RABBITMQ_ERLANG_COOKIE: "6085e2412b6fa88647466c6a81c0cea0"
+            RABBITMQ_NODENAME: rabbitmq1
         ports:
             - "4369:4369"
             - "5671:5671"
@@ -25,9 +26,20 @@ services:
             - "25672:25672"
             - "61613:61613"
         volumes:
-            - "./data/logs/rabbit:/var/log/rabbitmq:rw"
-            - "./data/rabbit:/var/lib/rabbitmq/mnesia:rw"
-            - "./rabbitmq/config/enabled_plugins:/etc/rabbitmq/enabled_plugins"
-            - "./rabbitmq/config/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
-            - "./rabbitmq/config/rabbitmq-modified.conf:/etc/rabbitmq/rabbitmq-modified.conf"
-            - "./rabbitmq/config/rabbitmq-definitions.json:/etc/rabbitmq/rabbitmq-definitions.json"
+            - "./data/logs/rabbit-node-one:/var/log/rabbitmq:rw"
+            - "./data/rabbit-node-one:/var/lib/rabbitmq/mnesia:rw"
+
+    rabbitmq2:
+        hostname: rabbitmq2
+        image: microservices/rabbitmq
+        build: 
+            context: ./rabbitmq
+            dockerfile: Dockerfile
+        environment: 
+            RABBITMQ_ERLANG_COOKIE: "6085e2412b6fa88647466c6a81c0cea0"
+            RABBITMQ_NODENAME: rabbitmq2
+        depends_on: 
+            - rabbitmq1
+        volumes:
+            - "./data/logs/rabbit-node-two:/var/log/rabbitmq:rw"
+            - "./data/rabbit-node-two:/var/lib/rabbitmq/mnesia:rw"
