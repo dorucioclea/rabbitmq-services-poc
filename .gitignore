@@ -348,4 +348,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-data/rabbit
+data/rabbit-node-one
+data/rabbit-node-two
+data/logs/rabbit-node-one
+data/logs/rabbit-node-two
