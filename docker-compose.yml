@@ -27,7 +27,7 @@ services:
         volumes:
             - "./data/logs/rabbit:/var/log/rabbitmq:rw"
             - "./data/rabbit:/var/lib/rabbitmq/mnesia:rw"
-            - "./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
-            - "./rabbitmq/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
-            - "./rabbitmq/rabbitmq-modified.conf:/etc/rabbitmq/rabbitmq-modified.conf"
-            - "./rabbitmq/rabbitmq-definitions.json:/etc/rabbitmq/rabbitmq-definitions.json"
+            - "./rabbitmq/config/enabled_plugins:/etc/rabbitmq/enabled_plugins"
+            - "./rabbitmq/config/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
+            - "./rabbitmq/config/rabbitmq-modified.conf:/etc/rabbitmq/rabbitmq-modified.conf"
+            - "./rabbitmq/config/rabbitmq-definitions.json:/etc/rabbitmq/rabbitmq-definitions.json"
