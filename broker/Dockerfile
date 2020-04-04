@@ -8,6 +8,6 @@ FROM rabbitmq:${RABBIT_VERSION}
 
 COPY /configuration/definitions.json /opt/definitions.json
 COPY /configuration/rabbit.config /etc/rabbitmq/rabbitmq.config
-COPY /plugins/enabled_plugins /etc/rabbitmq/enabled_plugins
+COPY /plugins/enabled_plugins /etc/rabbitmq/enabled_plugins 
 
 CMD ["rabbitmq-server"]
