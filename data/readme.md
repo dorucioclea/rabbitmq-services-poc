@@ -1,0 +1,1 @@
+Do not delete this folder as it will hold persistend data volume mappings for some services

@@ -1,0 +1,1 @@
+[rabbitmq_management,rabbitmq_mqtt,rabbitmq_peer_discovery_etcd, rabbitmq_management_visualiser, rabbitmq_amqp1_0,rabbitmq_mqtt, rabbitmq_federation, rabbitmq_federation_management, rabbitmq_web_mqtt].
