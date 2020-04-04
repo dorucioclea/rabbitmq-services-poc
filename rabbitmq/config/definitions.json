@@ -1,4 +1,5 @@
 {
+    "rabbit_version":"3.6.3",
     "users": [
         {
             "name": "rabbitmq-user",
@@ -27,9 +28,7 @@
             "pattern": "^common",
             "apply-to": "queues",
             "definition": {
-                "ha-mode": "exactly",
-                "ha-params": 1,
-                "ha-sync-mode": "automatic"
+                "ha-mode":"all","ha-sync-mode":"automatic","ha-sync-batch-size":5
             }
         },
         {
@@ -42,11 +41,10 @@
                 "message-ttl": 100000,
                 "dead-letter-exchange": "mqtt_dead_letter_exchange",
                 "dead-letter-routing-key": "message_dead_lettered",
-                "ha-mode": "exactly",
-                "ha-params": 1,
-                "ha-sync-mode": "automatic"
+                "ha-mode":"all","ha-sync-mode":"automatic","ha-sync-batch-size":5
             }
-        }
+        },
+        {"vhost":"/","name":"ha","pattern":"", "definition":{"ha-mode":"all","ha-sync-mode":"automatic","ha-sync-batch-size":5}}
     ],
     "queues": [
         {
