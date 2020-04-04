@@ -8,10 +8,10 @@ services:
     rabbitmq:
         hostname: rabbitmq
         container_name: rabbitmq
-        image: rabbitmq:3.8.3-management-alpine
-        # build: 
-        #     context: ./broker
-        #     dockerfile: Dockerfile
+        image: microservices/rabbitmq
+        build: 
+            context: ./rabbitmq
+            dockerfile: Dockerfile
         environment: 
             RABBITMQ_ERLANG_COOKIE: '6085e2412b6fa88647466c6a81c0cea0'
         networks: 
