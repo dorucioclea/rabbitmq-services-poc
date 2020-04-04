@@ -25,7 +25,7 @@ services:
             - "25672:25672"
             - "61613:61613"
         volumes:
-            - "./data/rabbit/logs:/var/log/rabbitmq:rw"
+            - "./data/logs/rabbit:/var/log/rabbitmq:rw"
             - "./data/rabbit:/var/lib/rabbitmq/mnesia:rw"
             - "./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
             - "./rabbitmq/rabbitmq-env.conf:/etc/rabbitmq/rabbitmq-env.conf"
