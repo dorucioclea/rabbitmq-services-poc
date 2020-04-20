@@ -1,0 +1,59 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rabbitmq-master
+  name: rabbitmq-master
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: rabbitmq-master
+    spec:
+      containers:
+      - env:
+        - name: RABBITMQ_ERLANG_COOKIE
+          value: 6085e2412b6fa88647466c6a81c0cea0
+        - name: RABBITMQ_NODENAME
+          value: rabbitmq-master
+        image: microservices/rabbitmq
+        name: rabbitmq-master
+        ports:
+        - containerPort: 4369
+        - containerPort: 5671
+        - containerPort: 5672
+        - containerPort: 15671
+        - containerPort: 15672
+        - containerPort: 25672
+        - containerPort: 61613
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - ALL
+        volumeMounts:
+        - mountPath: /var/log/rabbitmq
+          name: rabbitmq-master-log
+        - mountPath: /var/lib/rabbitmq/mnesia
+          name: rabbitmq-master-data
+      hostname: rabbitmq-master
+      restartPolicy: Always
+      volumes:
+      - name: rabbitmq-master-log
+        persistentVolumeClaim:
+          claimName: rabbitmq-master-log
+      - name: rabbitmq-master-data
+        persistentVolumeClaim:
+          claimName: rabbitmq-master-data
+status: {}
