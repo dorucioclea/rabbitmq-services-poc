@@ -1,0 +1,47 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rabbitmq-slave
+  name: rabbitmq-slave
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: rabbitmq-slave
+    spec:
+      containers:
+      - env:
+        - name: RABBITMQ_ERLANG_COOKIE
+          value: 6085e2412b6fa88647466c6a81c0cea0
+        - name: RABBITMQ_NODENAME
+          value: rabbitmq-slave
+        image: microservices/rabbitmq
+        name: rabbitmq-slave
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/log/rabbitmq
+          name: rabbitmq-slave-log
+        - mountPath: /var/lib/rabbitmq/mnesia
+          name: rabbitmq-slave-data
+      hostname: rabbitmq-slave
+      restartPolicy: Always
+      volumes:
+      - name: rabbitmq-slave-log
+        persistentVolumeClaim:
+          claimName: rabbitmq-slave-log
+      - name: rabbitmq-slave-data
+        persistentVolumeClaim:
+          claimName: rabbitmq-slave-data
+status: {}
