@@ -16,7 +16,6 @@ services:
         cap_add:
             - ALL
         environment: 
-            RABBITMQ_ERLANG_COOKIE: "6085e2412b6fa88647466c6a81c0cea0"
             RABBITMQ_NODENAME: rabbitmq-master
         ports:
             - "4369:4369"
@@ -40,7 +39,6 @@ services:
             context: ./rabbitmq
             dockerfile: Dockerfile
         environment: 
-            RABBITMQ_ERLANG_COOKIE: "6085e2412b6fa88647466c6a81c0cea0"
             RABBITMQ_NODENAME: rabbitmq-slave
         depends_on: 
             - rabbitmq-master
