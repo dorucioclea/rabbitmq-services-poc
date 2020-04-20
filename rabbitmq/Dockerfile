@@ -13,14 +13,16 @@ RUN apk add \
     --no-cache  --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/
 
 COPY config/enabled_plugins /etc/rabbitmq/enabled_plugins
-COPY config/rabbitmq.config /etc/rabbitmq/rabbitmq.config
-COPY config/definitions.json /etc/rabbitmq/definitions.json
+COPY config/rabbitmq-env.conf /etc/rabbitmq/rabbitmq-env.conf
+COPY config/rabbitmq-modified.conf /etc/rabbitmq/rabbitmq-modified.conf	
+COPY config/definitions.json /etc/rabbitmq/rabbitmq-definitions.json
 
 COPY scripts/start-rabbitmq-management.sh /usr/bin/start-rabbitmq-management.sh
 COPY supervisord/supervisord.conf /etc/supervisor/supervisord.conf
 
 RUN dos2unix /usr/bin/start-rabbitmq-management.sh
 RUN chmod +x /usr/bin/start-rabbitmq-management.sh
+
 
 ENTRYPOINT ["/sbin/tini", "--", "docker-entrypoint.sh"]
 
