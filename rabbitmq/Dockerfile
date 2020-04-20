@@ -15,6 +15,8 @@ RUN apk add \
 COPY config/enabled_plugins /etc/rabbitmq/enabled_plugins
 COPY config/rabbitmq.config /etc/rabbitmq/rabbitmq.config
 COPY config/definitions.json /etc/rabbitmq/definitions.json
+COPY config/erlang.cookie /var/lib/rabbitmq/.erlang.cookie
+
 
 COPY scripts/start-rabbitmq-management.sh /usr/bin/start-rabbitmq-management.sh
 COPY supervisord/supervisord.conf /etc/supervisor/supervisord.conf
