@@ -6,9 +6,9 @@ networks:
       name: servicenetwork
 
 services:
-    rabbitmq1:
-        hostname: rabbitmq1
-        container_name: rabbitmq1
+    rabbitmq-master:
+        hostname: rabbitmq-master
+        container_name: rabbitmq-master
         image: microservices/rabbitmq
         build: 
             context: ./rabbitmq
@@ -17,7 +17,7 @@ services:
             - ALL
         environment: 
             RABBITMQ_ERLANG_COOKIE: "6085e2412b6fa88647466c6a81c0cea0"
-            RABBITMQ_NODENAME: rabbitmq1
+            RABBITMQ_NODENAME: rabbitmq-master
         ports:
             - "4369:4369"
             - "5671:5671"
@@ -29,23 +29,38 @@ services:
         networks: 
             - internal
         volumes:
-            - "./data/logs/rabbit-node-one:/var/log/rabbitmq:rw"
-            - "./data/rabbit-node-one:/var/lib/rabbitmq/mnesia:rw"
+            - rabbitmq-master-log:/var/log/rabbitmq
+            - rabbitmq-master-data:/var/lib/rabbitmq/mnesia
 
-    rabbitmq2:
-        hostname: rabbitmq2
-        container_name: rabbitmq2
+    rabbitmq-slave:
+        hostname: rabbitmq-slave
+        container_name: rabbitmq-slave
         image: microservices/rabbitmq
         build: 
             context: ./rabbitmq
             dockerfile: Dockerfile
         environment: 
             RABBITMQ_ERLANG_COOKIE: "6085e2412b6fa88647466c6a81c0cea0"
-            RABBITMQ_NODENAME: rabbitmq2
+            RABBITMQ_NODENAME: rabbitmq-slave
         depends_on: 
-            - rabbitmq1
+            - rabbitmq-master
         networks: 
             - internal
         volumes:
-            - "./data/logs/rabbit-node-two:/var/log/rabbitmq:rw"
-            - "./data/rabbit-node-two:/var/lib/rabbitmq/mnesia:rw"
+            - rabbitmq-slave-log:/var/log/rabbitmq
+            - rabbitmq-slave-data:/var/lib/rabbitmq/mnesia
+
+
+volumes:
+    rabbitmq-master-log:
+        external: false
+        name: rabbitmq-master-log
+    rabbitmq-slave-log:
+        external: false
+        name: rabbitmq-slave-log
+    rabbitmq-master-data:
+        external: false
+        name: rabbitmq-master-data
+    rabbitmq-slave-data:
+        external: false
+        name: rabbitmq-slave-data
